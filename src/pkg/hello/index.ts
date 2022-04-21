@@ -1,10 +1,14 @@
 import router from 'express';
 
+import { api } from '../../api';
+import { generateRouterPaths } from '../../api/generateRouterPaths';
+
 const helloHandler = router();
 
-helloHandler.get('/', (req, resp) => {
-  resp.status(200);
-  resp.send('Hello world');
-});
+const {
+  hello: { paths },
+} = api;
+
+generateRouterPaths(paths, helloHandler);
 
 export default helloHandler;
