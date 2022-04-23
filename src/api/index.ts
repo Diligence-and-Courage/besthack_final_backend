@@ -1,4 +1,5 @@
 import { authMiddleware } from '../middlewares/auth';
+import { roleMiddleware } from '../middlewares/role';
 import {
   getAllCurrencyInfo,
   getCurrencyInfo,
@@ -27,7 +28,9 @@ import {
   getUserCurrencyByCode,
   loginExistsValidator,
   removeUserCurrencies,
+  setUserRole,
   userCurrenciesValidation,
+  userRoleValidation,
 } from '../pkg/user/usecase';
 import { Api } from './types';
 
@@ -101,22 +104,32 @@ export const api: Api = {
       {
         url: '/balance',
         method: 'post',
-        middlewares: [authMiddleware, addBalanceValidation()],
+        middlewares: [authMiddleware, roleMiddleware(['admin']), addBalanceValidation()],
         handler: addBalance,
       },
       // Добавить акции
       {
         url: '/currency',
         method: 'post',
-        middlewares: [authMiddleware, userCurrenciesValidation()],
+        middlewares: [authMiddleware, roleMiddleware(['admin']), userCurrenciesValidation()],
         handler: addUserCurrencies,
+      },
+      {
+        url: '/role',
+        method: 'post',
+        middlewares: [authMiddleware, roleMiddleware(['admin', 'user']), userRoleValidation()],
+        handler: setUserRole,
       },
       // Delete methods
       // Удалить акции
       {
         url: '/currency',
         method: 'delete',
-        middlewares: [authMiddleware, userCurrenciesValidation()],
+        middlewares: [
+          authMiddleware,
+          roleMiddleware(['admin', 'user']),
+          userCurrenciesValidation(),
+        ],
         handler: removeUserCurrencies,
       },
     ],

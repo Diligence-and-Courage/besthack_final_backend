@@ -3,7 +3,7 @@ import { CreateUserInfo, UserInfo } from '../../../models';
 import { camelize, logger } from '../../../utils';
 
 const insertQuery =
-  'insert into users (email, password) values ($1, $2) returning id, email, balance';
+  'insert into users (email, password) values ($1, $2) returning id, email, role, balance';
 
 export const insertUser = async (user: CreateUserInfo): Promise<null | UserInfo> => {
   try {

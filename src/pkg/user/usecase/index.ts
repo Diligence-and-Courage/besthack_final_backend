@@ -7,3 +7,4 @@ export * from './getUser';
 export * from './getUserCurrencies';
 export * from './getUserCurrencyByCode';
 export * from './removeUserCurrencies';
+export * from './setUserRole';

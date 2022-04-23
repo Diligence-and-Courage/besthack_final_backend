@@ -10,6 +10,7 @@ create table users
 (
     id         serial primary key,
     email      citext collate "C"  not null unique,
+    role       text                not null default 'user',
     password   text                not null,
     balance    float default 0     not null,
     attempts   int   default 0     not null,
