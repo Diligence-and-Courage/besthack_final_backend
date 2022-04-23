@@ -2,6 +2,7 @@ export * from './addBalance';
 export * from './addUserCurrencies';
 export * from './authUser';
 export * from './createUser';
+export * from './getLoginExists';
 export * from './getUser';
 export * from './getUserCurrencies';
 export * from './getUserCurrencyByCode';

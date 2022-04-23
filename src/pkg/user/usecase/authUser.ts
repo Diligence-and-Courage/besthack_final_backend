@@ -6,6 +6,7 @@ import { omit } from 'lodash';
 import { AppResponse, AuthUserInfo, UserInfo } from '../../../models';
 import { decamelize, setCookieUserId } from '../../../utils';
 import { selectUserByEmail } from '../repository';
+import { resetUserIsBlocked, updateUserIsBlocked } from '../repository/updateUserIsBlocked';
 
 export const authValidation = () => [
   body('password').exists().withMessage('Not exists').isString().withMessage('Not string'),
@@ -28,7 +29,14 @@ export const authUser = async (req: Request, resp: Response) => {
     });
   }
 
+  if (user.isBlocked) {
+    return resp.status(403).send(<AppResponse<never>>{
+      errors: [`User is blocked`],
+    });
+  }
+
   if (!compareSync(password, user.password)) {
+    await updateUserIsBlocked(user.id);
     return resp.status(401).send(<AppResponse<never>>{
       errors: [`Invalid password for user with email ${email}`],
     });
@@ -36,7 +44,11 @@ export const authUser = async (req: Request, resp: Response) => {
 
   setCookieUserId(resp, user.id);
 
+  await resetUserIsBlocked(user.id);
+
+  const respUser = await selectUserByEmail(email);
+
   return resp.send(<AppResponse<UserInfo>>{
-    data: decamelize(omit(user, ['password'])),
+    data: decamelize(omit(respUser, ['password'])),
   });
 };
