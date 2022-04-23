@@ -1,5 +1,10 @@
 import { authMiddleware } from '../middlewares/auth';
-import { getNews } from '../pkg/news/usecase';
+import {
+  getNews,
+  getNewsSources,
+  updateNewsSources,
+  updateNewsSourcesValidator,
+} from '../pkg/news/usecase';
 import {
   authUser,
   authValidation,
@@ -12,7 +17,21 @@ import { Api } from './types';
 export const api: Api = {
   news: {
     prefix: '/news',
-    paths: [{ url: '/', handler: getNews, middlewares: [], method: 'get' }],
+    paths: [
+      { url: '/', handler: getNews, middlewares: [], method: 'get' },
+      {
+        url: '/sources',
+        method: 'get',
+        handler: getNewsSources,
+        middlewares: [],
+      },
+      {
+        url: '/sources',
+        method: 'put',
+        handler: updateNewsSources,
+        middlewares: [updateNewsSourcesValidator()],
+      },
+    ],
   },
   user: {
     prefix: '/user',
