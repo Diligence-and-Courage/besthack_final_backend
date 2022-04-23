@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { query, validationResult } from 'express-validator';
 
 import { AppResponse, TimeSeriesRequest, TimeSeriesValues } from '../../../models';
+import { decamelize } from '../../../utils';
 import { getApiTimeSeries } from '../repository/getApiTimeseries';
 
 export const timeSeriesValidator = () => [
@@ -50,6 +51,6 @@ export const getTimeSeries = async (
 
   const data = await getApiTimeSeries(req.query);
   return resp.send(<AppResponse<TimeSeriesValues[]>>{
-    data,
+    data: decamelize(data),
   });
 };

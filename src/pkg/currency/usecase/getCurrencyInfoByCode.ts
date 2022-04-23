@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { AppResponse, Code, CurrencyInfo } from '../../../models';
+import { decamelize } from '../../../utils';
 import { selectCurrencyInfoByCode } from '../repository';
 
 export const getCurrencyInfoByCode = async (req: Request<{ code?: Code }>, resp: Response) => {
@@ -13,6 +14,6 @@ export const getCurrencyInfoByCode = async (req: Request<{ code?: Code }>, resp:
   const data = await selectCurrencyInfoByCode(req.params.code);
 
   return resp.send(<AppResponse<CurrencyInfo>>{
-    data,
+    data: decamelize(data),
   });
 };
