@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from 'express';
 
 import { AppResponse } from '../models';
-import { getCookieUserId } from '../utils';
 import { selectUserById } from '../pkg/user/repository';
+import { getCookieUserId } from '../utils';
 
 // eslint-disable-next-line consistent-return
 export const authMiddleware = async (req: Request, resp: Response, next: NextFunction) => {
