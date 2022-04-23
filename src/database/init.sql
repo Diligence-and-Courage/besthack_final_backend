@@ -2,6 +2,7 @@ drop table if exists users cascade;
 drop table if exists domains_enabled cascade;
 drop table if exists currency_cost cascade;
 drop table if exists currency_info cascade;
+drop table if exists users_currencies cascade;
 
 create extension if not exists citext;
 
