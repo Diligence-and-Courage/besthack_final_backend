@@ -1,5 +1,9 @@
 import { authMiddleware } from '../middlewares/auth';
-import { getCurrencyInfo, getCurrencyInfoValidation } from '../pkg/currency/usecase';
+import {
+  getCurrencyInfo,
+  getCurrencyInfoByCode,
+  getCurrencyInfoValidation,
+} from '../pkg/currency/usecase';
 import {
   getNews,
   getNewsSources,
@@ -71,6 +75,7 @@ export const api: Api = {
         middlewares: [getCurrencyInfoValidation()],
         handler: getCurrencyInfo,
       },
+      { url: '/info/:code', method: 'get', middlewares: [], handler: getCurrencyInfoByCode },
     ],
   },
 };

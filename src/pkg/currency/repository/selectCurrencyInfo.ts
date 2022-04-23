@@ -3,7 +3,7 @@ import { Code, CurrencyInfo } from '../../../models';
 import { camelize } from '../../../utils';
 
 const query = 'select * from currency_info';
-const queryByCode = 'select * from currency_info where code=$1';
+const queryByCode = 'select * from currency_info where currency_code=$1';
 
 export const selectCurrencyInfo = async (): Promise<CurrencyInfo[]> => {
   const { rows } = await pool.query(query);

@@ -47,11 +47,13 @@ export const getCurrencyInfo = async (
     currencyInfo[code] = info.find((el) => el.currencyCode === code);
   });
 
-  const data = costs.map<Currency>(({ baseCode, code, ...rest }) => ({
-    baseCode: currencyInfo[baseCode],
-    code: currencyInfo[code],
-    ...rest,
-  }));
+  const data = costs
+    .filter((el) => el.baseCode !== el.code)
+    .map<Currency>(({ baseCode, code, ...rest }) => ({
+      baseCode: currencyInfo[baseCode],
+      code: currencyInfo[code],
+      ...rest,
+    }));
 
   return resp.send(<AppResponse<Currency[]>>{
     data,
