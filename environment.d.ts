@@ -13,6 +13,7 @@ declare global {
       PGDATABASE?: string;
       PGPORT?: string;
       NEWSAPI_KEY: string;
+      CURRENCIES: string;
     }
   }
 }

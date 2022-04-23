@@ -32,3 +32,17 @@ export type NewsResponse = {
   // when status ok
   articles?: NewsArticle[];
 };
+
+export type UpdateDomainsEnabledRequest = {
+  domain: string;
+  enabled: boolean;
+};
+
+export const availableDomains = ['news.google.com', 'lenta.ru', 'www.rbc.ru', 'russian.rt.com'];
+export type Domain = 'news.google.com' | 'lenta.ru' | 'www.rbc.ru' | 'russian.rt.com';
+export type GetNewsRequest = {
+  page?: number;
+  pageSize?: number;
+};
+
+export type NewsDomains = { domain: Domain; isEnabled: boolean };

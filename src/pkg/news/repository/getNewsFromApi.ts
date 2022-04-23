@@ -1,16 +1,9 @@
 // import { sub } from 'date-fns';
 // import NewsAPI from 'newsapi';
 
-import { NewsArticle } from '../../../models';
+import { GetNewsRequest, NewsArticle } from '../../../models';
 // import { toISODate } from '../../../utils/dateFormats';
 // import { selectNewsDomains } from './selectNewsDomains';
-
-export const availableDomains = ['news.google.com', 'lenta.ru', 'www.rbc.ru', 'russian.rt.com'];
-export type Domain = 'news.google.com' | 'lenta.ru' | 'www.rbc.ru' | 'russian.rt.com';
-export type GetNewsApiProps = {
-  page?: number;
-  pageSize?: number;
-};
 
 const articles: NewsArticle[] = [
   {
@@ -173,8 +166,9 @@ const articles: NewsArticle[] = [
 export const GetNewsFromApi = async ({
   page = 1,
   pageSize = 10,
-}: GetNewsApiProps): Promise<NewsArticle[] | null> => {
-  // const domains = await selectNewsDomains();
+}: GetNewsRequest): Promise<NewsArticle[] | null> => {
+  // const res = await selectNewsDomains();
+  // const domains = res.map((row) => row.domain);
 
   console.log(page, pageSize);
 

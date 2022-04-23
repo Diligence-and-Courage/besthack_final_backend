@@ -8,7 +8,9 @@
     "dev": "NODE_ENV=development nodemon --watch './src/**' src/server.ts",
     "lint": "eslint ./src --ext .ts",
     "lint:fix": "eslint --fix ./src --ext .ts",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "parseCurrencies": "ts-node src/scripts/parseCurrencies.ts",
+    "updateCurrencyCost": "ts-node src/scripts/updateCurrencyCost.ts"
   },
   "repository": {
     "type": "git",

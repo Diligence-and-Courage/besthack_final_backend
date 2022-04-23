@@ -1,12 +1,11 @@
 import { pool } from '../../../database/pool';
-import { Domain } from './getNewsFromApi';
+import { NewsDomains } from '../../../models';
+import { camelize } from '../../../utils';
 
-const query = 'select domain from domains_enabled where is_enabled = true;';
+const query = 'select domain, is_enabled from domains_enabled where is_enabled = true;';
 
-export const selectNewsDomains = async (): Promise<Domain[]> => {
+export const selectNewsDomains = async (): Promise<NewsDomains[]> => {
   const { rows } = await pool.query(query);
 
-  const typedRows = rows as { domain: Domain }[];
-
-  return typedRows.map((row) => row.domain);
+  return camelize(rows) as NewsDomains[];
 };

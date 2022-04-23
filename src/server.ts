@@ -6,6 +6,7 @@ import morgan from 'morgan';
 
 import { api } from './api';
 import corsMiddleware from './middlewares/cors';
+import currencyHandler from './pkg/currency';
 import newsHandler from './pkg/news';
 import userHandler from './pkg/user';
 
@@ -22,10 +23,12 @@ server.use(cookieParser());
 const {
   user: { prefix: userPrefix },
   news: { prefix: newsPrefix },
+  currency: { prefix: currencyPrefix },
 } = api;
 
 server.use(userPrefix, userHandler);
 server.use(newsPrefix, newsHandler);
+server.use(currencyPrefix, currencyHandler);
 
 server.listen(PORT);
 console.log(`Server listening on port ${PORT}`);

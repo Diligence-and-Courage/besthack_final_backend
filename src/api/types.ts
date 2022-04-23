@@ -13,4 +13,4 @@ export type Route = {
   paths: Path[];
 };
 
-export type Api = Record<'news' | 'user', Route>;
+export type Api = Record<'news' | 'user' | 'currency', Route>;
