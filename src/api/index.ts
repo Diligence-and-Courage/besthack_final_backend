@@ -5,6 +5,7 @@ import {
   getCurrencyInfoByCode,
   getCurrencyInfoValidation,
 } from '../pkg/currency/usecase';
+import { getTimeSeries, timeSeriesValidator } from '../pkg/currency/usecase/getTimeSeries';
 import {
   getNews,
   getNewsSources,
@@ -78,6 +79,12 @@ export const api: Api = {
       },
       { url: '/info/:code', method: 'get', middlewares: [], handler: getCurrencyInfoByCode },
       { url: '/all', method: 'get', middlewares: [], handler: getAllCurrencyInfo },
+      {
+        url: '/timeseries',
+        method: 'get',
+        middlewares: [timeSeriesValidator()],
+        handler: getTimeSeries,
+      },
     ],
   },
 };
