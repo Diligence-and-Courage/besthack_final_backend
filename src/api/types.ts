@@ -5,7 +5,7 @@ export type Path = {
   url: string;
   method: 'get' | 'post' | 'put' | 'delete';
   middlewares: (RequestHandler | ValidationChain[])[];
-  handler: RequestHandler;
+  handler: RequestHandler<any, any, any, any>;
 };
 
 export type Route = {
@@ -13,4 +13,4 @@ export type Route = {
   paths: Path[];
 };
 
-export type Api = Record<'hello' | 'user', Route>;
+export type Api = Record<'news' | 'user', Route>;

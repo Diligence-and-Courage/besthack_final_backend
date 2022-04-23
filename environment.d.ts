@@ -12,6 +12,7 @@ declare global {
       PGPASSWORD?: string;
       PGDATABASE?: string;
       PGPORT?: string;
+      NEWSAPI_KEY: string;
     }
   }
 }

@@ -1,5 +1,5 @@
 import { authMiddleware } from '../middlewares/auth';
-import { sendHello } from '../pkg/hello/usecase';
+import { getNews } from '../pkg/news/usecase';
 import {
   authUser,
   authValidation,
@@ -10,9 +10,9 @@ import {
 import { Api } from './types';
 
 export const api: Api = {
-  hello: {
-    prefix: '/hello',
-    paths: [{ url: '/', handler: sendHello, middlewares: [authMiddleware], method: 'get' }],
+  news: {
+    prefix: '/news',
+    paths: [{ url: '/', handler: getNews, middlewares: [], method: 'get' }],
   },
   user: {
     prefix: '/user',

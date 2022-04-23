@@ -6,7 +6,7 @@ import morgan from 'morgan';
 
 import { api } from './api';
 import corsMiddleware from './middlewares/cors';
-import helloHandler from './pkg/hello';
+import newsHandler from './pkg/news';
 import userHandler from './pkg/user';
 
 dotenv.config();
@@ -20,12 +20,12 @@ server.use(bodyParser.json());
 server.use(cookieParser());
 
 const {
-  hello: { prefix: helloPrefix },
   user: { prefix: userPrefix },
+  news: { prefix: newsPrefix },
 } = api;
 
-server.use(helloPrefix, helloHandler);
 server.use(userPrefix, userHandler);
+server.use(newsPrefix, newsHandler);
 
 server.listen(PORT);
 console.log(`Server listening on port ${PORT}`);
