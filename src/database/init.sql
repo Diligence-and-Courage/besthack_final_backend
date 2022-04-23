@@ -1,5 +1,7 @@
 drop table if exists users cascade;
-drop table if exists domains_enabled;
+drop table if exists domains_enabled cascade;
+drop table if exists currency_cost cascade;
+drop table if exists currency_info cascade;
 
 create extension if not exists citext;
 
@@ -27,3 +29,21 @@ insert into domains_enabled (domain)
 values ('www.rbc.ru');
 insert into domains_enabled (domain)
 values ('russian.rt.com');
+
+create table currency_info
+(
+    currency_code         citext collate "C" not null unique,
+    name         text               not null,
+    symbol       text               not null,
+    country_code text               not null,
+    country_name text               not null
+);
+
+create table currency_cost
+(
+    base_code       citext collate "C" not null references currency_info (code) on delete cascade,
+    code           citext collate "C" not null references currency_info (code) on delete cascade,
+    cost           float              not null,
+    change         float              not null,
+    percent_change float              not null
+)

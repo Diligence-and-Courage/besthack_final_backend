@@ -1,4 +1,5 @@
 import { authMiddleware } from '../middlewares/auth';
+import { getCurrencyInfo, getCurrencyInfoValidation } from '../pkg/currency/usecase';
 import {
   getNews,
   getNewsSources,
@@ -58,6 +59,17 @@ export const api: Api = {
         method: 'post',
         middlewares: [createUserValidation()],
         handler: createUser,
+      },
+    ],
+  },
+  currency: {
+    prefix: '/currency',
+    paths: [
+      {
+        url: '/info',
+        method: 'get',
+        middlewares: [getCurrencyInfoValidation()],
+        handler: getCurrencyInfo,
       },
     ],
   },
