@@ -21,9 +21,11 @@ import {
   authValidation,
   createUser,
   createUserValidation,
+  getLoginExists,
   getUser,
   getUserCurrencies,
   getUserCurrencyByCode,
+  loginExistsValidator,
   removeUserCurrencies,
   userCurrenciesValidation,
 } from '../pkg/user/usecase';
@@ -58,6 +60,13 @@ export const api: Api = {
         method: 'get',
         middlewares: [authMiddleware],
         handler: getUser,
+      },
+      {
+        // Проверка есть ли логин
+        url: '/exists',
+        method: 'get',
+        middlewares: [loginExistsValidator()],
+        handler: getLoginExists,
       },
       // Получить акцию пользователя с кодом
       {

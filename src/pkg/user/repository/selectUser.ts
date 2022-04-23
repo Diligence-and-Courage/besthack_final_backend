@@ -2,7 +2,8 @@ import { pool } from '../../../database/pool';
 import { User } from '../../../models';
 import { camelize } from '../../../utils';
 
-const baseQuery = 'select id, email, first_name, last_name, balance, password from users';
+const baseQuery =
+  'select id, email, first_name, last_name, balance, password, attempts, is_blocked from users';
 const selectByIdQuery = `${baseQuery} where id = $1`;
 const selectByPasswordQuery = `${baseQuery} where email = $1`;
 

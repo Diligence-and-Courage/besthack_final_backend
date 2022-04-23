@@ -9,11 +9,13 @@ create extension if not exists citext;
 create table users
 (
     id         serial primary key,
-    email      citext collate "C" not null unique,
-    first_name text               not null,
-    last_name  text               not null,
-    password   text               not null,
-    balance    float default 0
+    email      citext collate "C"  not null unique,
+    first_name text                not null,
+    last_name  text                not null,
+    password   text                not null,
+    balance    float default 0     not null,
+    attempts   int   default 0     not null,
+    is_blocked bool  default false not null
 );
 
 create table domains_enabled

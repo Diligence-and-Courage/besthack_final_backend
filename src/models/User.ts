@@ -7,10 +7,12 @@ export interface User {
   lastName: string;
   password: string;
   balance: number;
+  attempts: number;
+  isBlocked: number;
 }
 
 export type UserInfo = Omit<User, 'password'>;
-export type CreateUserInfo = Omit<User, 'id' | 'balance'>;
+export type CreateUserInfo = Omit<User, 'id' | 'balance' | 'attempts' | 'isBlocked'>;
 export type AuthUserInfo = Pick<User, 'password' | 'email'>;
 
 export type UserCurrenciesAdd = {
