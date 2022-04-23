@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { AppResponse, NewsArticle } from '../../../models';
+import { decamelize } from '../../../utils';
 import { GetNewsFromApi } from '../repository';
 
 type QueryParams = {
@@ -14,6 +15,6 @@ export const getNews = async (req: Request<any, any, any, QueryParams>, resp: Re
     return resp.status(404).send(<AppResponse<never>>{ errors: ['No news found'] });
   }
   return resp.send(<AppResponse<NewsArticle[]>>{
-    data: articles,
+    data: decamelize(articles),
   });
 };

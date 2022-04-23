@@ -4,6 +4,8 @@ import {
   getCurrencyInfo,
   getCurrencyInfoByCode,
   getCurrencyInfoValidation,
+  getTimeSeries,
+  timeSeriesValidator,
 } from '../pkg/currency/usecase';
 import {
   getNews,
@@ -12,11 +14,18 @@ import {
   updateNewsSourcesValidator,
 } from '../pkg/news/usecase';
 import {
+  addBalance,
+  addBalanceValidation,
+  addUserCurrencies,
   authUser,
   authValidation,
   createUser,
   createUserValidation,
   getUser,
+  getUserCurrencies,
+  getUserCurrencyByCode,
+  removeUserCurrencies,
+  userCurrenciesValidation,
 } from '../pkg/user/usecase';
 import { Api } from './types';
 
@@ -50,6 +59,20 @@ export const api: Api = {
         middlewares: [authMiddleware],
         handler: getUser,
       },
+      // Получить акцию пользователя с кодом
+      {
+        url: '/currency/:code',
+        method: 'get',
+        middlewares: [authMiddleware],
+        handler: getUserCurrencyByCode,
+      },
+      // Получить акции пользователя
+      {
+        url: '/currency',
+        method: 'get',
+        middlewares: [authMiddleware],
+        handler: getUserCurrencies,
+      },
       // Post methods
       // Войти
       {
@@ -65,6 +88,28 @@ export const api: Api = {
         middlewares: [createUserValidation()],
         handler: createUser,
       },
+      // Обновить баланс
+      {
+        url: '/balance',
+        method: 'post',
+        middlewares: [authMiddleware, addBalanceValidation()],
+        handler: addBalance,
+      },
+      // Добавить акции
+      {
+        url: '/currency',
+        method: 'post',
+        middlewares: [authMiddleware, userCurrenciesValidation()],
+        handler: addUserCurrencies,
+      },
+      // Delete methods
+      // Удалить акции
+      {
+        url: '/currency',
+        method: 'delete',
+        middlewares: [authMiddleware, userCurrenciesValidation()],
+        handler: removeUserCurrencies,
+      },
     ],
   },
   currency: {
@@ -78,6 +123,12 @@ export const api: Api = {
       },
       { url: '/info/:code', method: 'get', middlewares: [], handler: getCurrencyInfoByCode },
       { url: '/all', method: 'get', middlewares: [], handler: getAllCurrencyInfo },
+      {
+        url: '/timeseries',
+        method: 'get',
+        middlewares: [timeSeriesValidator()],
+        handler: getTimeSeries,
+      },
     ],
   },
 };

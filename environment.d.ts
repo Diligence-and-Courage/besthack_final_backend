@@ -14,6 +14,7 @@ declare global {
       PGPORT?: string;
       NEWSAPI_KEY: string;
       CURRENCIES: string;
+      TWELVE_DATA_API_KEY: string;
     }
   }
 }

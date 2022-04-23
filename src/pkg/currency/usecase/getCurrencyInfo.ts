@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { query, validationResult } from 'express-validator';
 
 import { AppResponse, Code, Currency, CurrencyInfo } from '../../../models';
+import { decamelize } from '../../../utils';
 import { selectCurrencyInfo } from '../repository';
 import { selectCurrencyCost } from '../repository/selectCurrencyCost';
 
@@ -56,6 +57,6 @@ export const getCurrencyInfo = async (
     }));
 
   return resp.send(<AppResponse<Currency[]>>{
-    data,
+    data: decamelize(data),
   });
 };
