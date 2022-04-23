@@ -3,16 +3,11 @@ import { CreateUserInfo, UserInfo } from '../../../models';
 import { camelize, logger } from '../../../utils';
 
 const insertQuery =
-  'insert into users (email, first_name, last_name, password) values ($1, $2, $3, $4) returning id, first_name, last_name, balance';
+  'insert into users (email, password) values ($1, $2) returning id, email, balance';
 
 export const insertUser = async (user: CreateUserInfo): Promise<null | UserInfo> => {
   try {
-    const { rows } = await pool.query(insertQuery, [
-      user.email,
-      user.firstName,
-      user.lastName,
-      user.password,
-    ]);
+    const { rows } = await pool.query(insertQuery, [user.email, user.password]);
     return camelize(rows[0]) as UserInfo;
   } catch (e) {
     logger.error(`User insert into DB error: ${e.message}`);

@@ -6,11 +6,7 @@ import { camelize, decamelize, hash, setCookieUserId } from '../../../utils';
 import { insertUser } from '../repository';
 
 export const createUserValidation = () => [
-  body(['first_name', 'last_name', 'password'])
-    .exists()
-    .withMessage('Not exists')
-    .isString()
-    .withMessage('Not string'),
+  body(['password']).exists().withMessage('Not exists').isString().withMessage('Not string'),
   body('email').exists().withMessage('Not exists').isEmail().withMessage('Invalid Email'),
 ];
 
