@@ -20,8 +20,10 @@ import {
   addUserCurrencies,
   authUser,
   authValidation,
+  blockUser,
   createUser,
   createUserValidation,
+  getAllUsers,
   getLoginExists,
   getUser,
   getUserCurrencies,
@@ -29,6 +31,7 @@ import {
   loginExistsValidator,
   removeUserCurrencies,
   setUserRole,
+  unblockUser,
   userCurrenciesValidation,
   userRoleValidation,
 } from '../pkg/user/usecase';
@@ -63,6 +66,27 @@ export const api: Api = {
         method: 'get',
         middlewares: [authMiddleware],
         handler: getUser,
+      },
+      {
+        // Получить пользователя
+        url: '/all',
+        method: 'get',
+        middlewares: [authMiddleware, roleMiddleware(['admin'])],
+        handler: getAllUsers,
+      },
+      {
+        // Получить пользователя
+        url: '/block',
+        method: 'post',
+        middlewares: [authMiddleware, roleMiddleware(['admin'])],
+        handler: blockUser,
+      },
+      {
+        // Получить пользователя
+        url: '/unblock',
+        method: 'post',
+        middlewares: [authMiddleware, roleMiddleware(['admin'])],
+        handler: unblockUser,
       },
       {
         // Проверка есть ли логин
