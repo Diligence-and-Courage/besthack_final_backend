@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
+import requestIp from 'request-ip';
 
 import { AppResponse } from '../../../models';
+import { logHistory } from '../../../utils/logHistory';
 import { resetUserIsBlocked, selectUserById, updateBlockUser } from '../repository';
 
 export const userBlockValidation = () => [body('userId').exists().isInt()];
@@ -24,6 +26,13 @@ export const blockUser = async (req: Request, resp: Response) => {
   }
 
   await updateBlockUser(user.id);
+
+  await logHistory({
+    ip: requestIp.getClientIp(req),
+    userInfo: user.email,
+    actions: 'block user',
+  });
+
   return resp.sendStatus(200);
 };
 
@@ -45,5 +54,12 @@ export const unblockUser = async (req: Request, resp: Response) => {
   }
 
   await resetUserIsBlocked(user.id);
+
+  await logHistory({
+    ip: requestIp.getClientIp(req),
+    userInfo: user.email,
+    actions: 'unblock user',
+  });
+
   return resp.sendStatus(200);
 };

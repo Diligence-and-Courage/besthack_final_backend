@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
+import requestIp from 'request-ip';
 
 import { AppResponse, Role } from '../../../models';
+import { logHistory } from '../../../utils/logHistory';
 import { selectUserById, updateUserRole } from '../repository';
 
 export const userRoleValidation = () => [
@@ -36,6 +38,12 @@ export const setUserRole = async (req: Request, resp: Response) => {
   }
 
   await updateUserRole(resp.locals.userId, role);
+
+  await logHistory({
+    ip: requestIp.getClientIp(req),
+    userInfo: user.email,
+    actions: 'update user role',
+  });
 
   return resp.sendStatus(200);
 };

@@ -1,9 +1,11 @@
 import type { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { round } from 'lodash';
+import requestIp from 'request-ip';
 
 import { AppResponse, UserInfo } from '../../../models';
 import { decamelize } from '../../../utils';
+import { logHistory } from '../../../utils/logHistory';
 import { selectUserById, updateBalance } from '../repository';
 
 export const addBalanceValidation = () => [
@@ -33,6 +35,12 @@ export const addBalance = async (req: Request, resp: Response) => {
       errors: ['Not found'],
     });
   }
+
+  await logHistory({
+    ip: requestIp.getClientIp(req),
+    userInfo: user.email,
+    actions: `update balance at user`,
+  });
 
   return resp.send(<AppResponse<UserInfo>>{
     data: decamelize(user),

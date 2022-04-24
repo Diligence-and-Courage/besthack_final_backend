@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { round } from 'lodash';
+import requestIp from 'request-ip';
 
 import { AppResponse, UserCurrenciesAdd } from '../../../models';
+import { logHistory } from '../../../utils/logHistory';
 import { selectCurrencyInfoByCode } from '../../currency/repository';
 import {
   deleteUserCurrencies,
@@ -65,6 +67,12 @@ export const removeUserCurrencies = async (req: Request, resp: Response) => {
   if (userCurr.count === -userCurrRemove.count) {
     await deleteUserCurrencies(userCurrRemove.code, userCurrRemove.userId);
   }
+
+  await logHistory({
+    ip: requestIp.getClientIp(req),
+    userInfo: userInfo.email,
+    actions: `sell currency`,
+  });
 
   return resp.send(<AppResponse<{ count: number }>>{
     data: {

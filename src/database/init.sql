@@ -3,6 +3,7 @@ drop table if exists domains_enabled cascade;
 drop table if exists currency_cost cascade;
 drop table if exists currency_info cascade;
 drop table if exists users_currencies cascade;
+drop table if exists history cascade;
 
 create extension if not exists citext;
 
@@ -56,4 +57,13 @@ create table users_currencies
     code    citext collate "C" not null references currency_info (currency_code) on delete cascade,
     count   float              not null,
     constraint pk_user_id_stock_symbol primary key (user_id, code)
+);
+
+create table history
+(
+    id        serial primary key,
+    ip        text not null,
+    time      text not null,
+    user_info text not null,
+    action    text not null
 );
