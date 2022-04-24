@@ -1,4 +1,5 @@
 import { authMiddleware } from '../middlewares/auth';
+import { roleMiddleware } from '../middlewares/role';
 import {
   getAllCurrencyInfo,
   getCurrencyInfo,
@@ -19,15 +20,20 @@ import {
   addUserCurrencies,
   authUser,
   authValidation,
+  blockUser,
   createUser,
   createUserValidation,
+  getAllUsers,
   getLoginExists,
   getUser,
   getUserCurrencies,
   getUserCurrencyByCode,
   loginExistsValidator,
   removeUserCurrencies,
+  setUserRole,
+  unblockUser,
   userCurrenciesValidation,
+  userRoleValidation,
 } from '../pkg/user/usecase';
 import { Api } from './types';
 
@@ -60,6 +66,27 @@ export const api: Api = {
         method: 'get',
         middlewares: [authMiddleware],
         handler: getUser,
+      },
+      {
+        // Получить пользователя
+        url: '/all',
+        method: 'get',
+        middlewares: [authMiddleware, roleMiddleware(['admin'])],
+        handler: getAllUsers,
+      },
+      {
+        // Получить пользователя
+        url: '/block',
+        method: 'post',
+        middlewares: [authMiddleware, roleMiddleware(['admin'])],
+        handler: blockUser,
+      },
+      {
+        // Получить пользователя
+        url: '/unblock',
+        method: 'post',
+        middlewares: [authMiddleware, roleMiddleware(['admin'])],
+        handler: unblockUser,
       },
       {
         // Проверка есть ли логин
@@ -101,22 +128,32 @@ export const api: Api = {
       {
         url: '/balance',
         method: 'post',
-        middlewares: [authMiddleware, addBalanceValidation()],
+        middlewares: [authMiddleware, roleMiddleware(['admin']), addBalanceValidation()],
         handler: addBalance,
       },
       // Добавить акции
       {
         url: '/currency',
         method: 'post',
-        middlewares: [authMiddleware, userCurrenciesValidation()],
+        middlewares: [authMiddleware, roleMiddleware(['admin']), userCurrenciesValidation()],
         handler: addUserCurrencies,
+      },
+      {
+        url: '/role',
+        method: 'post',
+        middlewares: [authMiddleware, roleMiddleware(['admin', 'user']), userRoleValidation()],
+        handler: setUserRole,
       },
       // Delete methods
       // Удалить акции
       {
         url: '/currency',
         method: 'delete',
-        middlewares: [authMiddleware, userCurrenciesValidation()],
+        middlewares: [
+          authMiddleware,
+          roleMiddleware(['admin', 'user']),
+          userCurrenciesValidation(),
+        ],
         handler: removeUserCurrencies,
       },
     ],

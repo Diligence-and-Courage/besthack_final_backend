@@ -4,12 +4,17 @@ import { selectUserById } from './selectUser';
 const query = `update users
                set (attempts, is_blocked) = ($1, $2)
                where id = $3
-               returning id, email, first_name, last_name, balance, is_blocked, attempts`;
+               returning id, email, balance, is_blocked, attempts`;
 
 const resetQuery = `update users
                     set (attempts, is_blocked) = (0, false)
                     where id = $1
-                    returning id, email, first_name, last_name, balance, is_blocked, attempts`;
+                    returning id, email, balance, is_blocked, attempts`;
+
+const blockQuery = `update users
+                    set (attempts, is_blocked) = (0, true)
+                    where id = $1
+                    returning id, email, balance, is_blocked, attempts`;
 
 export const updateUserIsBlocked = async (userId: number) => {
   const user = await selectUserById(userId);
@@ -19,6 +24,10 @@ export const updateUserIsBlocked = async (userId: number) => {
   } else {
     await pool.query(query, [user.attempts + 1, false, userId]);
   }
+};
+
+export const updateBlockUser = async (userId: number) => {
+  await pool.query(blockQuery, [userId]);
 };
 
 export const resetUserIsBlocked = async (userId: number) => {

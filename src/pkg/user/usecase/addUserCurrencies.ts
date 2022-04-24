@@ -1,8 +1,10 @@
 import type { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { round } from 'lodash';
+import requestIp from 'request-ip';
 
 import { AppResponse, UserCurrenciesAdd } from '../../../models';
+import { logHistory } from '../../../utils/logHistory';
 import { selectCurrencyInfoByCode } from '../../currency/repository';
 import { insertUserCurrencies, selectUserById, updateBalance } from '../repository';
 
@@ -63,6 +65,13 @@ export const addUserCurrencies = async (req: Request, resp: Response) => {
   await updateBalance(resp.locals.userId, round(user.balance - cost, 4));
 
   const count = await insertUserCurrencies(userCurrencyAdd);
+
+  await logHistory({
+    ip: requestIp.getClientIp(req),
+    userInfo: user.email,
+    actions: `buy currency`,
+  });
+
   return resp.send(<AppResponse<{ count: number }>>{
     data: {
       count,

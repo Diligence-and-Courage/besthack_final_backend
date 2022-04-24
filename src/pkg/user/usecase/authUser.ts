@@ -2,9 +2,11 @@ import { compareSync } from 'bcrypt';
 import type { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { omit } from 'lodash';
+import requestIp from 'request-ip';
 
 import { AppResponse, AuthUserInfo, UserInfo } from '../../../models';
 import { decamelize, setCookieUserId } from '../../../utils';
+import { logHistory } from '../../../utils/logHistory';
 import { selectUserByEmail } from '../repository';
 import { resetUserIsBlocked, updateUserIsBlocked } from '../repository/updateUserIsBlocked';
 
@@ -47,6 +49,12 @@ export const authUser = async (req: Request, resp: Response) => {
   await resetUserIsBlocked(user.id);
 
   const respUser = await selectUserByEmail(email);
+
+  await logHistory({
+    ip: requestIp.getClientIp(req),
+    userInfo: respUser.email,
+    actions: 'auth user',
+  });
 
   return resp.send(<AppResponse<UserInfo>>{
     data: decamelize(omit(respUser, ['password'])),

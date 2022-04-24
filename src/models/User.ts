@@ -1,5 +1,7 @@
 import { Code, CurrencyCost, CurrencyInfo } from './Currency';
 
+export type Role = 'common' | 'user' | 'admin';
+
 export interface User {
   id: number;
   email: string;
@@ -7,6 +9,7 @@ export interface User {
   balance: number;
   attempts: number;
   isBlocked: number;
+  role: Role;
 }
 
 export type UserInfo = Omit<User, 'password'>;

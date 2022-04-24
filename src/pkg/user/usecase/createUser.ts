@@ -1,8 +1,10 @@
 import type { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
+import requestIp from 'request-ip';
 
 import { AppResponse, CreateUserInfo, UserInfo } from '../../../models';
 import { camelize, decamelize, hash, setCookieUserId } from '../../../utils';
+import { logHistory } from '../../../utils/logHistory';
 import { insertUser } from '../repository';
 
 export const createUserValidation = () => [
@@ -27,6 +29,12 @@ export const createUser = async (req: Request, resp: Response) => {
       errors: [`User already exists`],
     });
   }
+
+  await logHistory({
+    ip: requestIp.getClientIp(req),
+    userInfo: userInfo.email,
+    actions: 'create user',
+  });
 
   setCookieUserId(resp, userInfo.id);
 
