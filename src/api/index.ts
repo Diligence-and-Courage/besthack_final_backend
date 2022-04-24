@@ -29,6 +29,7 @@ import {
   getUserCurrencies,
   getUserCurrencyByCode,
   loginExistsValidator,
+  logoutUser,
   removeUserCurrencies,
   setUserRole,
   unblockUser,
@@ -68,11 +69,18 @@ export const api: Api = {
         handler: getUser,
       },
       {
-        // Получить пользователя
+        // Получить всех пользователей
         url: '/all',
         method: 'get',
         middlewares: [authMiddleware, roleMiddleware(['admin'])],
         handler: getAllUsers,
+      },
+      {
+        // Получить пользователя
+        url: '/logout',
+        method: 'post',
+        middlewares: [],
+        handler: logoutUser,
       },
       {
         // Получить пользователя

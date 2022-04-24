@@ -8,5 +8,6 @@ export * from './getLoginExists';
 export * from './getUser';
 export * from './getUserCurrencies';
 export * from './getUserCurrencyByCode';
+export * from './logout';
 export * from './removeUserCurrencies';
 export * from './setUserRole';

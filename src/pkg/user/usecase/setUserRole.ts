@@ -37,7 +37,7 @@ export const setUserRole = async (req: Request, resp: Response) => {
     });
   }
 
-  await updateUserRole(resp.locals.userId, role);
+  await updateUserRole(userId, role);
 
   await logHistory({
     ip: requestIp.getClientIp(req),
