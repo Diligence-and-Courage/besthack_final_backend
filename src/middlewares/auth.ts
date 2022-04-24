@@ -14,6 +14,11 @@ export const authMiddleware = async (req: Request, resp: Response, next: NextFun
   }
 
   const user = await selectUserById(userId);
+  if (!user) {
+    return resp.status(401).send(<AppResponse<never>>{
+      errors: ['User not authorised'],
+    });
+  }
   if (user.isBlocked) {
     return resp.status(403).send(<AppResponse<never>>{
       errors: ['User is blocked'],
